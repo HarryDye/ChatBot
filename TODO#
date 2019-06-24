@@ -1,0 +1,5 @@
+1.gets a message from the Database using pusher
+2.have the chat displayed as soon as it is submitted (VUE) ajax or onclick event 
+3.get an api to feed the data for the question
+4.logic using the api to have a few paths which the chat could go, i.e weather api, use "where are you going?", "When are you going?".
+4a. or rugby laws, breakdown into categories ""

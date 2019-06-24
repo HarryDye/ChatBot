@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ChatController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,6 +13,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'ChatController@index');
+
+Route::get('/send', 'ChatController@create');
+
+Route::post('/', 'ChatController@store');
