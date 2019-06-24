@@ -11,7 +11,7 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
         <script src="js/app.js"></script>
-        <script src="{{asset('js/echo.js')}}"></script>
+        <!-- <script src="{{asset('js/echo.js')}}"></script> -->
         <script>
         var module = { };
            // Enable pusher logging - don't include this in production
@@ -30,6 +30,7 @@
            function postMessage() {
              document.getElementById('result').innerHTML =
                 document.getElementById('text').value;
+             document.getElementById('test').style.display = "block";
            }
 
         </script>
@@ -114,7 +115,7 @@
               margin-left: 35%;
             }
             .message:last-child {
-              /* display: none; */
+              display: none;
             }
         </style>
     </head>
@@ -133,12 +134,11 @@
             <p>{{ $message->content }}</p>
           </div>
           @endforeach
-          <div class="message">
+          <div id="test" class="message">
             <p id="result"></p>
           </div>
         </div>
 
-        <iframe name="votar" style="display:none;"></iframe>
         <form action="/" method="post" >
           <input type="text" name="text" id="text">
           <input type="submit" onclick="postMessage()">
