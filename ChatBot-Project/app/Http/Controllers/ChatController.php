@@ -18,9 +18,7 @@ class ChatController extends Controller
 
     public function create()
     {
-      $messages = Chat::all();
-
-      return view('welcome', compact('messages'));
+      return Chat::all();
     }
 
     public function store()
@@ -31,12 +29,13 @@ class ChatController extends Controller
 
       $text->content = request('text');
 
-      event(new ChatStarted($text));
+      broadcast(new ChatStarted($text))->toOthers();
 
       $text->save();
 
       //function that stops the redirect and
 
-      return view('welcome', compact('messages'));
+      // return view('welcome', compact('messages'));
+      return ['status' => 'OK'];
     }
 }

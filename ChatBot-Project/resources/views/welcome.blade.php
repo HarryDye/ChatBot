@@ -9,31 +9,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-        <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
-        <script src="js/app.js"></script>
-        <!-- <script src="{{asset('js/echo.js')}}"></script> -->
-        <script>
-        var module = { };
-           // Enable pusher logging - don't include this in production
-           Pusher.logToConsole = true;
 
-           var pusher = new Pusher('f45f35f433671e1538b4', {
-             cluster: 'eu',
-             forceTLS: true
-           });
-
-           var channel = pusher.subscribe('my-channel');
-           channel.bind('chat-started', function(data) {
-             alert(JSON.stringify(data));
-           });
-
-           function postMessage() {
-             document.getElementById('result').innerHTML =
-                document.getElementById('text').value;
-             document.getElementById('test').style.display = "block";
-           }
-
-        </script>
         <!-- Styles -->
         <style>
             html, body {
@@ -114,13 +90,10 @@
             .message:nth-child(2n+1) {
               margin-left: 35%;
             }
-            .message:last-child {
-              display: none;
-            }
         </style>
     </head>
     <body>
-      <div class="content">
+      <div id="app" class="content">
         <div class="title m-b-md">
           ChatBot
         </div>
@@ -128,32 +101,57 @@
           Ask something please.
         </p>
 
-        <div class="flex">
-          @foreach ($messages as $message)
-          <div class="message">
-            <p>{{ $message->content }}</p>
-          </div>
-          @endforeach
-          <div id="test" class="message">
-            <p id="result"></p>
-          </div>
-        </div>
+          <chat-messages :messages="messages"></chat-messages>
 
-        <form action="/" method="post" >
-          <input type="text" name="text" id="text">
-          <input type="submit" onclick="postMessage()">
-          {{ csrf_field() }}
-        </form>
+          <chat-composer v-on:messageSent="postMessage"></chat-composer>
+
+          <!-- <div class="flex">
+            @foreach ($messages as $message)
+            <div class="message">
+              <p>{{ $message->content }}</p>
+            </div>
+            @endforeach
+            <div id="test" class="message">
+              <p id="result"></p>
+            </div>
+          </div>
+
+          <form action="/" method="post" >
+            <input type="text" name="text" id="text">
+            <input type="submit" onclick="postMessage()">
+            {{ csrf_field() }}
+          </form> -->
 
       </div>
     </body>
+    <!-- <script>
+        window.Echo = new Echo({
+            broadcaster: 'pusher',
+            key: '{{env("PUSHER_KEY")}}',
+            cluster: 'eu',
+            encrypted: true,
+            authEndpoint: '{{env("APP_URL")}}/broadcasting/auth'
+        });
+    </script> -->
+    <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
+    <script src="js/app.js"></script>
+    <!-- <script src="{{asset('js/echo.js')}}"></script> -->
     <script>
-    window.Echo = new Echo({
-        broadcaster: 'pusher',
-        key: '{{env("PUSHER_KEY")}}',
-        cluster: 'eu',
-        encrypted: true,
-        authEndpoint: '{{env("APP_URL")}}/broadcasting/auth'
-    });
-</script>
+      var module = { };
+       // Enable pusher logging - don't include this in production
+       Pusher.logToConsole = true;
+
+       var pusher = new Pusher('f45f35f433671e1538b4', {
+         cluster: 'eu',
+         forceTLS: true
+       });
+
+       var channel = pusher.subscribe('my-channel');
+       channel.bind('chat-started', function(data) {
+         alert(JSON.stringify(data));
+       });
+
+
+
+    </script>
 </html>

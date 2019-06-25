@@ -19,19 +19,48 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('chat-messages', require('./components/ChatMessages.vue').default);
+Vue.component('chat-composer', require('./components/ChatComposer.vue').default);
+Vue.component('chat-message', require('./components/Chatmessage.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
- Echo.channel('my-channel')
-  .listen('ChatStarted', (e) => {
-      console.log(e);
-  });
+ //
+ // Echo.channel('my-channel')
+ //  .listen('ChatStarted', (e) => {
+ //      console.log(e);
+ //  });
 
 const app = new Vue({
     el: '#app',
+    data: {
+      messages: []
+    },
+    methods: {
+      postMessage(message) {
+          //to db
+          this.messages.push(message);
+
+          axios.post('/', message).then(response => {
+            //add to database
+          });
+      }
+    },
+
+    created() {
+      axios.get('/messages').then(response => {
+        this.messages = response.data;
+      });
+
+      Echo.channel('my-channel')
+      .listen('chat-started', (e) => {
+        this.messages.push({
+          message: e.message.content
+        });
+          console.log(e);
+      });
+    }
 });

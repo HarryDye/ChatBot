@@ -15,6 +15,6 @@ use App\Http\Controllers\ChatController;
 
 Route::get('/', 'ChatController@index');
 
-Route::get('/send', 'ChatController@create');
+Route::get('/messages', 'ChatController@create');
 
 Route::post('/', 'ChatController@store');
